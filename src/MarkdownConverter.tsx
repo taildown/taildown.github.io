@@ -48,8 +48,11 @@ const MarkdownConverter: React.FC = () => {
   };
 
   const components = {
+    // eslint-disable-next-line jsx-a11y/heading-has-content
     h1: ({ node, ...props }: any) => <h1 aria-label="header" {...props} className={tailwindClasses.h1} />,
+    // eslint-disable-next-line jsx-a11y/heading-has-content
     h2: ({ node, ...props }: any) => <h2 aria-label="header" {...props} className={tailwindClasses.h2} />,
+    // eslint-disable-next-line jsx-a11y/heading-has-content
     h3: ({ node, ...props }: any) => <h3 aria-label="header" {...props} className={tailwindClasses.h3} />,
     p: ({ node, ...props }: any) => <p className={tailwindClasses.p} {...props} />,
     a: ({ node, ...props }: any) => <a aria-label="Link" className={tailwindClasses.a} {...props} />,
