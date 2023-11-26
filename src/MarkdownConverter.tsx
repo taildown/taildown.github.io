@@ -5,6 +5,7 @@ import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
 import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable } from 'react-icons/fa';
+import BarButton from './components/BarButton';
 import ConfigFieldset from './components/ConfigFieldset';
 
 interface TailwindClasses {
@@ -76,74 +77,55 @@ const MarkdownConverter: React.FC = () => {
         <div className="flex items-center flex-col">
         {/* Botões para inserir Markdown */}
         <div className="flex gap-x-2 bg-gray-50 p-2 border border-gray-200 rounded-t-md w-full divide">
-            <button
-            onClick={() => handleMarkdownInsert('\n# ')}
-            className="px-3 py-2  text-gray-600 hover:bg-gray-100 transition rounded"
-            >
-            H1
-            </button>
-            <button
-            onClick={() => handleMarkdownInsert('\n## ')}
-            className="px-3 py-2  text-gray-600 hover:bg-gray-100 transition rounded"
-            >
-            H2
-            </button>
-            <button
-            onClick={() => handleMarkdownInsert('\n### ')}
-            className="px-3 py-2  text-gray-600 hover:bg-gray-100 transition rounded"
-            >
-            H3
-            </button>
-            <button
-            onClick={() => handleMarkdownInsert('![Alt Text](image.png)')}
-            className="px-3 py-2  text-gray-600 hover:bg-gray-100 transition rounded flex gap-2"
-            >
-            <FaImage className="text-[18px]" />
-            </button>
-            <button
-            onClick={() => handleMarkdownInsert(`\n[Link Text](example.com)`)}
-            className="px-3 py-2  text-gray-600 hover:bg-gray-100 transition rounded"
-            >
-            <FaLink className="text-[18px]" />
-            </button>
-            <button
-            onClick={() => handleMarkdownInsert(`\n|   |   |   |\n|---|---|---|`)}
-            className="px-3 py-2  text-gray-600 hover:bg-gray-100 transition rounded"
-            >
-            <FaTable className="text-[18px]" />
-            </button>
-            <button
-            onClick={() => setEditionMode('edit')}
-            className={`px-3 py-2 text-slate-500 hover:bg-slate-100 rounded ml-auto ${
-                editionMode === 'edit' && 'shadow-inner bg-slate-100'
-            }`}
-            >
-            <FaPen className="text-[18px]" />
-            </button>
-            <button
-            onClick={() => setEditionMode('code')}
-            className={`px-3 py-2 text-slate-500 hover:bg-slate-100 rounded ${
-                editionMode === 'code' && 'shadow-inner bg-slate-100'
-            }`}
-            >
-            <FaCode className="text-[18px]" />
-            </button>
-            <button
-            onClick={() => setEditionMode('preview')}
-            className={`px-3 py-2 text-slate-500 hover:bg-slate-100 rounded ${
-                editionMode === 'preview' && 'shadow-inner bg-slate-100'
-            }`}
-            >
-            <FaEye className="text-[18px]" />
-            </button>
-            <button
-            onClick={() => setEditionMode('config')}
-            className={`px-3 py-2 text-slate-500 hover:bg-slate-100 rounded ${
-                editionMode === 'config' && 'shadow-inner bg-slate-100'
-            }`}
-            >
-            <FaCog className="text-[18px]" />
-            </button>
+            <BarButton 
+                label={<>H1</>} 
+                onClick={() => handleMarkdownInsert('\n# ')} 
+                disabled={editionMode !== 'edit'}
+            />
+            <BarButton 
+                label={<>H2</>} 
+                disabled={editionMode !== 'edit'}
+                onClick={() => handleMarkdownInsert('\n## ')} />
+            <BarButton 
+                label={<>H3</>} 
+                disabled={editionMode !== 'edit'}
+                onClick={() => handleMarkdownInsert('\n### ')} />
+            <BarButton 
+                label={<FaImage className="text-[18px]" />} 
+                disabled={editionMode !== 'edit'}
+                onClick={() => handleMarkdownInsert('![Alt Text](image.png)')} 
+            />
+            <BarButton
+                label={<FaLink className="text-[18px]" />}
+                disabled={editionMode !== 'edit'}
+                onClick={() => handleMarkdownInsert('\n[Link Text](example.com)')}
+            />
+            <BarButton
+                label={<FaTable className="text-[18px]" />}
+                disabled={editionMode !== 'edit'}
+                onClick={() => handleMarkdownInsert('\n|   |   |   |\n|---|---|---|')}
+            />            
+            <hr className='bg-gray-200 h-[inherit] ml-auto w-[1px]' />
+            <BarButton
+                label={<FaPen className="text-[18px]" />}
+                onClick={() => setEditionMode('edit')}
+                active={editionMode === 'edit'}
+            />
+            <BarButton
+                label={<FaCode className="text-[18px]" />}
+                onClick={() => setEditionMode('code')}       
+                active={editionMode === 'code'}         
+            />
+            <BarButton
+                label={<FaEye className="text-[18px]" />}
+                onClick={() => setEditionMode('preview')}
+                active={editionMode === 'preview'}
+            />
+            <BarButton
+                label={<FaCog className="text-[18px]" />}
+                onClick={() => setEditionMode('config')}
+                active={editionMode === 'config'}
+            />
         </div>
 
         {editionMode === 'preview' && (
@@ -230,7 +212,7 @@ const MarkdownConverter: React.FC = () => {
             className="w-full border-x border-b border-gray-200 p-4 rounded-b-md min-h-[300px] resize-none outline-none"
             placeholder="Enter markdown here..."
             />
-        )}
+        )}        
         </div>
     </main>
   );
