@@ -5,6 +5,7 @@ import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
 import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable } from 'react-icons/fa';
+import ConfigFieldset from './components/ConfigFieldset';
 
 interface TailwindClasses {
   [key: string]: string;
@@ -160,15 +161,17 @@ const MarkdownConverter: React.FC = () => {
       )}
       {editionMode === 'config' && (
         <div className="w-full border-x border-b border-gray-200 rounded-b-md p-4 flex flex-col text-left">
-          <h2 className="text-xl font-semibold mb-2">Configurações:</h2>
-          <fieldset className="border p-4 border-gray-100 mt-2">
-            <legend className="bg-slate-50 px-2 border boder-slate-100 text-xs font-semibold">Tailwind classes</legend>
+          <h2 className="text-xl font-semibold mb-2">Settings:</h2>
+          <ConfigFieldset
+            legend="Tailwind classes"
+            description="Set the Tailwind classes for each element."
+            >
             <div className="mb-4">
               <label>
                 H1:
                 <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.h1} onChange={handleConfigChange('h1')} />
               </label>
-            </div>
+            </div>        
             <div className="mb-4">
               <label>
                 H2:
@@ -198,17 +201,18 @@ const MarkdownConverter: React.FC = () => {
                 Link:
                 <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.a} onChange={handleConfigChange('a')} />
               </label>
-            </div>
-          </fieldset>
-          <fieldset className="border p-4 border-gray-100 mt-2">
-            <legend className="bg-slate-50 px-2 border boder-slate-100 text-xs font-semibold">Behavior</legend>
-            <div className="mb-4">
-              <label>
-                Link:
-                <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.a} onChange={handleConfigChange('a')} />
-              </label>
-            </div>
-          </fieldset>
+            </div>                
+            </ConfigFieldset>
+            <ConfigFieldset
+                legend="Behavior"
+            >
+                <div className="mb-4">
+                <label>
+                    Link:
+                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.a} onChange={handleConfigChange('a')} />
+                </label>
+                </div>
+            </ConfigFieldset>
         </div>
       )}
       {editionMode === 'edit' && (
