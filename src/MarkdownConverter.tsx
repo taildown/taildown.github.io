@@ -60,6 +60,8 @@ const MarkdownConverter: React.FC = () => {
     shouldShowLineNumbers: true
   });
 
+  const [isShowingExtraElements, setIsShowingExtraElements] = useState<boolean>(false);
+
   const [editionMode, setEditionMode] = useState<EditionModes>('edit');
   const [isEditionSelectionOpen, setIsEditionSelectionOpen] = useState<boolean>(false);
 
@@ -242,23 +244,61 @@ const MarkdownConverter: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
-                <label>
                     <ClassesSelector
                         name="Image:"
                         value={tailwindClasses.img}
                         onChange={e => handleConfigChange(e, 'img')}
                     />
-                </label>
                 </div>
                 <div className="mb-4">
-                <label>
                     <ClassesSelector
                         name="Table:"
                         value={tailwindClasses.table}
                         onChange={e => handleConfigChange(e, 'table')}
                     />
-                </label>
-                </div>                
+                </div>
+                <div className={`${isShowingExtraElements ? 'flex flex-col' : 'hidden' }`}>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Table Row:"
+                            value={tailwindClasses.tr}
+                            onChange={e => handleConfigChange(e, 'tr')}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Table Cell:"
+                            value={tailwindClasses.td}
+                            onChange={e => handleConfigChange(e, 'td')}
+                        />
+                    </div>                            
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Strong:"
+                            value={tailwindClasses.strong}
+                            onChange={e => handleConfigChange(e, 'strong')}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Emphasis:"
+                            value={tailwindClasses.em}
+                            onChange={e => handleConfigChange(e, 'em')}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Link:"
+                            value={tailwindClasses.a}
+                            onChange={e => handleConfigChange(e, 'a')}
+                        />
+                    </div>    
+                </div>
+                <span 
+                    onClick={() => setIsShowingExtraElements(!isShowingExtraElements)}
+                    className="text-sm text-gray-500 hover:text-gray-700 hover:underline transition cursor-pointer">
+                    {isShowingExtraElements ? 'Hide extra elements' : 'Show extra elements'} 
+                </span>
                 </ConfigFieldset>
                 <ConfigFieldset legend="Behavior">
                     <div className="mb-4">
