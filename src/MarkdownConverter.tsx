@@ -29,6 +29,9 @@ const MarkdownConverter: React.FC = () => {
     table: 'table-auto my-4',
     strong: 'font-bold',
     em: 'italic',
+    tr: 'border border-gray-200 even:bg-gray-50 odd:bg-white',
+    td: 'border border-gray-200 p-1',
+    th: 'border border-gray-200 p-1',
   });
 
   interface BehaviorConfig {
@@ -93,6 +96,11 @@ const MarkdownConverter: React.FC = () => {
     a: ({ node, ...props }: any) => <a aria-label="Link" className={tailwindClasses.a} {...props} target={behaviorConfigs.shouldOpenLinksInNewTab && '_blank'} />,
     img: ({ node, ...props }: any) => <img alt="" className={tailwindClasses.img} {...props} />,
     table: ({ node, ...props }: any) => <table className={tailwindClasses.table} {...props} />,
+    strong: ({ node, ...props }: any) => <strong className={tailwindClasses.strong} {...props} />,
+    em: ({ node, ...props }: any) => <em className={tailwindClasses.em} {...props} />,
+    tr: ({ node, ...props }: any) => <tr className={tailwindClasses.tr} {...props} />,
+    td: ({ node, ...props }: any) => <td className={tailwindClasses.td} {...props} />,
+    th: ({ node, ...props }: any) => <th className={tailwindClasses.th} {...props} />,
   };
 
   // Converte o JSX para uma string HTML
@@ -103,7 +111,7 @@ const MarkdownConverter: React.FC = () => {
   )}`;
 
   return (
-    <main className='container m-auto min-h-screen px-4 my-10'>
+    <main className='container m-auto min-h-screen px-4 my-10 flex flex-col'>
         <Helmet>
             <title>Taildown - Markdown editor with Tailwind CSS classes</title>
             <meta name="description" content="A simple yet powerful Markdown editor for your writing needs." />

@@ -17,6 +17,7 @@ Here's an example of a table:
 | Header 1 | Header 2 |
 | ---------| ---------|
 | Content 1| Content 2|
+| Content 3| Content 4|
 
 Feel free to modify this Markdown file to suit your needs and experiment with Tailwind CSS classes.
 
