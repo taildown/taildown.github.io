@@ -222,10 +222,11 @@ const MarkdownConverter: React.FC = () => {
         </div>
 
         {editionMode === 'preview' && (
-            <div className="w-full border-x border-b border-gray-200 rounded-b-md min-h-[300px] text-left p-4">
-            <Markdown components={components} remarkPlugins={[gfm]}>
-                {markdown}
-            </Markdown>
+            <div className="w-full bg-white border-x border-b border-gray-200 rounded-b-md min-h-[300px] text-left p-4">
+                <Markdown 
+                    components={components} remarkPlugins={[gfm]}>
+                    {markdown}
+                </Markdown>
             </div>
         )}
 
