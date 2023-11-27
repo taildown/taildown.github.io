@@ -75,10 +75,12 @@ const MarkdownConverter: React.FC = () => {
     textarea.focus();
   };
 
-  const handleConfigChange = (e: any, element: string) => {
-    const tailwindClasses = e.map((item: any) => item.value).join(' ');
-    setTailwindClasses({ ...tailwindClasses, [element]: tailwindClasses });
-  }
+    const handleConfigChange = (selectedOptions: any, property: string) => {
+        setTailwindClasses(prevState => ({
+            ...prevState,
+            [property]: selectedOptions.map((option: any) => option.value).join(' ')
+        }));
+    };
 
   const components = {
     // eslint-disable-next-line jsx-a11y/heading-has-content
