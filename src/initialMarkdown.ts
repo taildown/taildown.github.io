@@ -8,7 +8,7 @@ This is a simple example Markdown file to showcase some common elements using th
 
 This is a paragraph of text. You can easily style your text using Tailwind classes, such as making text **bold**, *italic*, or adjusting the size.
 
-![Alt Text](https://via.placeholder.com/150)
+![Placeholder cat](https://placekitten.com/200/200)
 
 [Visit Example](https://www.example.com)
 
