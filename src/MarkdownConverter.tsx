@@ -5,9 +5,11 @@ import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
 import { Helmet } from 'react-helmet';
-import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable } from 'react-icons/fa';
+import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable, FaCopy, FaSave } from 'react-icons/fa';
+import initialMarkdown from './initialMarkdown';
 import BarButton from './components/BarButton';
 import ConfigFieldset from './components/ConfigFieldset';
+import ClassesSelector from './components/ClassesSelector';
 
 interface TailwindClasses {
   [key: string]: string;
@@ -16,15 +18,17 @@ interface TailwindClasses {
 type EditionModes = 'edit' | 'preview' | 'code' | 'config';
 
 const MarkdownConverter: React.FC = () => {
-  const [markdown, setMarkdown] = useState<string>('');
+  const [markdown, setMarkdown] = useState<string>(initialMarkdown);
   const [tailwindClasses, setTailwindClasses] = useState<TailwindClasses>({
-    h1: 'text-3xl font-bold mb-4',
-    h2: 'text-2xl font-bold mb-4',
-    h3: 'text-xl font-bold mb-4',
-    p: 'mb-2',
-    a: 'text-blue-500',
-    img: 'max-w-full',
-    table: 'table-auto'
+    h1: 'text-3xl font-bold mb-4 text-gray-800',
+    h2: 'text-2xl font-bold mb-4 text-gray-800',
+    h3: 'text-xl font-bold mb-4 text-gray-800',
+    p: 'mb-2 text-base text-gray-800',
+    a: 'text-blue-500 hover:text-blue-700 hover:underline',
+    img: 'max-w-full my-4',
+    table: 'table-auto my-4',
+    strong: 'font-bold',
+    em: 'italic',
   });
 
   interface BehaviorConfig {
@@ -71,9 +75,10 @@ const MarkdownConverter: React.FC = () => {
     textarea.focus();
   };
 
-  const handleConfigChange = (element: string) => (e: ChangeEvent<HTMLInputElement>) => {
-    setTailwindClasses({ ...tailwindClasses, [element]: e.target.value });
-  };
+  const handleConfigChange = (e: any, element: string) => {
+    const tailwindClasses = e.map((item: any) => item.value).join(' ');
+    setTailwindClasses({ ...tailwindClasses, [element]: tailwindClasses });
+  }
 
   const components = {
     // eslint-disable-next-line jsx-a11y/heading-has-content
@@ -138,11 +143,20 @@ const MarkdownConverter: React.FC = () => {
                 onClick={() => handleMarkdownInsert('\n|   |   |   |\n|---|---|---|')}
             />            
             <hr className='bg-gray-200 h-[inherit] ml-auto w-[1px]' />
+            <BarButton
+                label={<FaCopy className="text-[18px]" />}                
+                onClick={() => console.log(htmlString)}
+            />
+            <BarButton
+                label={<FaSave className="text-[18px]" />}
+                onClick={() => console.log(htmlString)}
+            />            
+            <hr className='bg-gray-200 h-[inherit] w-[1px]' />
             <div 
                 onClick={() => setIsEditionSelectionOpen(!isEditionSelectionOpen)}
                 onMouseOver={() => setIsEditionSelectionOpen(true)}
                 onMouseLeave={() => setIsEditionSelectionOpen(false)}
-                className={`flex flex-col z-20 h-max border  rounded-md ${isEditionSelectionOpen ? 'overflow-visible bg-white h-content gap-1 p-1 mt-[-4px] mr-[-4px]' : 'overflow-hidden max-h-10'}  `}>
+                className={`flex flex-col z-20 h-max border  rounded-md ${isEditionSelectionOpen ? 'overflow-visible bg-white h-content gap-1 p-1 m-[-4px]' : 'overflow-hidden max-h-10'}  `}>
                 { editionButtons.sort((a, b) => a.edition === editionMode ? -1 : 1).map((button, index) => (
                     <BarButton
                         key={index}
@@ -172,8 +186,6 @@ const MarkdownConverter: React.FC = () => {
                 <SyntaxHighlighter 
                     language="markup"                    
                     showLineNumbers={behaviorConfigs.shouldShowLineNumbers}
-                    wrapLines={true}
-                    wrapLongLines={true}
                     customStyle={{ margin: '0', height: '100%' }}
                     style={materialLight}>
                     {htmlString}
@@ -188,39 +200,53 @@ const MarkdownConverter: React.FC = () => {
                 description="Set the Tailwind classes for each element."
                 >
                 <div className="mb-4">
-                <label>
-                    H1:
-                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.h1} onChange={handleConfigChange('h1')} />
-                </label>
+                    <ClassesSelector
+                        name="H1:"
+                        value={tailwindClasses.h1}
+                        onChange={e => handleConfigChange(e, 'h1')}
+                    />
                 </div>        
                 <div className="mb-4">
                 <label>
-                    H2:
-                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.h2} onChange={handleConfigChange('h2')} />
+                    <ClassesSelector
+                        name="H2:"
+                        value={tailwindClasses.h2}
+                        onChange={e => handleConfigChange(e, 'h2')}
+                    />
                 </label>
                 </div>
                 <div className="mb-4">
                 <label>
-                    H3:
-                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.h3} onChange={handleConfigChange('h3')} />
+                    <ClassesSelector
+                        name="H3:"
+                        value={tailwindClasses.h3}
+                        onChange={e => handleConfigChange(e, 'h3')}
+                    />
+                </label>
+                </div>
+                <div className="mb-4">
+                    <ClassesSelector
+                        name="Paragraph:"
+                        value={tailwindClasses.p}
+                        onChange={e => handleConfigChange(e, 'p')}
+                    />
+                </div>
+                <div className="mb-4">
+                <label>
+                    <ClassesSelector
+                        name="Image:"
+                        value={tailwindClasses.img}
+                        onChange={e => handleConfigChange(e, 'img')}
+                    />
                 </label>
                 </div>
                 <div className="mb-4">
                 <label>
-                    Paragraph:
-                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.p} onChange={handleConfigChange('p')} />
-                </label>
-                </div>
-                <div className="mb-4">
-                <label>
-                    Image:
-                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.img} onChange={handleConfigChange('img')} />
-                </label>
-                </div>
-                <div className="mb-4">
-                <label>
-                    Link:
-                    <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.a} onChange={handleConfigChange('a')} />
+                    <ClassesSelector
+                        name="Table:"
+                        value={tailwindClasses.table}
+                        onChange={e => handleConfigChange(e, 'table')}
+                    />
                 </label>
                 </div>                
                 </ConfigFieldset>
