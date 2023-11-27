@@ -32,12 +32,29 @@ const MarkdownConverter: React.FC = () => {
     shouldShowLineNumbers: boolean;
   }
 
+  const editionButtons = [
+    {
+        label: <FaPen className="text-[18px]" />,
+        edition: 'edit',
+    },
+    {
+        label: <FaCode className="text-[18px]" />,
+        edition: 'code',
+    },
+    {
+        label: <FaEye className="text-[18px]" />,
+        edition: 'preview',
+    }
+  ]
+
+
   const [behaviorConfigs, setBehaviorConfigs] = useState<BehaviorConfig>({
     shouldOpenLinksInNewTab: true,
     shouldShowLineNumbers: true
   });
 
   const [editionMode, setEditionMode] = useState<EditionModes>('edit');
+  const [isEditionSelectionOpen, setIsEditionSelectionOpen] = useState<boolean>(false);
 
   const handleMarkdownChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMarkdown(e.target.value);
@@ -47,10 +64,8 @@ const MarkdownConverter: React.FC = () => {
     const textarea = document.getElementById('markdownTextArea') as HTMLTextAreaElement;
     const selectionStart = textarea.selectionStart;
     const selectionEnd = textarea.selectionEnd;
-
     const newText = markdown.substring(0, selectionStart) + textToInsert + markdown.substring(selectionEnd);
     setMarkdown(newText);
-
     textarea.selectionStart = selectionStart + textToInsert.length;
     textarea.selectionEnd = selectionStart + textToInsert.length;
     textarea.focus();
@@ -87,15 +102,13 @@ const MarkdownConverter: React.FC = () => {
             <meta name="description" content="A simple yet powerful Markdown editor for your writing needs." />
             <meta name="keywords" content="Taildown, Markdown, Markdown Editor, React, Tailwind CSS" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            {/* Outros metadados, se necessário */}
         </Helmet>        
         <h1 className='text-base mt-5 text-slate-800 text-left mb-5'>
             <strong>Taildown</strong>
             <span>: Markdown Editor with Tailwind CSS</span>
         </h1> 
         <div className="flex items-center flex-col">
-        {/* Botões para inserir Markdown */}
-        <div className="flex gap-x-2 bg-gray-50 p-2 border border-gray-200 rounded-t-md w-full divide">
+        <div className="flex gap-x-2 bg-gray-50 p-2 border border-gray-200 rounded-t-md w-full divide max-h-[58px]">
             <BarButton 
                 label={<>H1</>} 
                 onClick={() => handleMarkdownInsert('\n# ')} 
@@ -125,26 +138,25 @@ const MarkdownConverter: React.FC = () => {
                 onClick={() => handleMarkdownInsert('\n|   |   |   |\n|---|---|---|')}
             />            
             <hr className='bg-gray-200 h-[inherit] ml-auto w-[1px]' />
-            <BarButton
-                label={<FaPen className="text-[18px]" />}
-                onClick={() => setEditionMode('edit')}
-                active={editionMode === 'edit'}
-            />
-            <BarButton
-                label={<FaCode className="text-[18px]" />}
-                onClick={() => setEditionMode('code')}       
-                active={editionMode === 'code'}         
-            />
-            <BarButton
-                label={<FaEye className="text-[18px]" />}
-                onClick={() => setEditionMode('preview')}
-                active={editionMode === 'preview'}
-            />
+            <div 
+                onClick={() => setIsEditionSelectionOpen(!isEditionSelectionOpen)}
+                onMouseOver={() => setIsEditionSelectionOpen(true)}
+                onMouseLeave={() => setIsEditionSelectionOpen(false)}
+                className={`flex flex-col z-20 h-max border  rounded-md ${isEditionSelectionOpen ? 'overflow-visible bg-white h-content gap-1 p-1 mt-[-4px] mr-[-4px]' : 'overflow-hidden max-h-10'}  `}>
+                { editionButtons.sort((a, b) => a.edition === editionMode ? -1 : 1).map((button, index) => (
+                    <BarButton
+                        key={index}
+                        label={button.label}
+                        onClick={() => setEditionMode(button.edition as EditionModes)}
+                        active={editionMode === button.edition}
+                    />
+                ))}
+            </div>
             <BarButton
                 label={<FaCog className="text-[18px]" />}
                 onClick={() => setEditionMode('config')}
                 active={editionMode === 'config'}
-            />
+            />            
         </div>
 
         {editionMode === 'preview' && (
