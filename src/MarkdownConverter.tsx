@@ -5,7 +5,7 @@ import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
 import { Helmet } from 'react-helmet';
-import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable, FaCopy, FaSave } from 'react-icons/fa';
+import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable, FaCopy, FaDownload } from 'react-icons/fa';
 import initialMarkdown from './initialMarkdown';
 import BarButton from './components/BarButton';
 import ConfigFieldset from './components/ConfigFieldset';
@@ -87,6 +87,17 @@ const MarkdownConverter: React.FC = () => {
         }));
     };
 
+    const handleDownload = () => {
+        const content = editionMode === 'edit' ? markdown : htmlString;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = editionMode === 'edit' ? 'markdown.md' : 'generated.html';
+        a.click();
+        URL.revokeObjectURL(url);    
+    };    
+
   const components = {
     // eslint-disable-next-line jsx-a11y/heading-has-content
     h1: ({ node, ...props }: any) => <h1 aria-label="header" {...props} className={tailwindClasses.h1} />,
@@ -156,12 +167,12 @@ const MarkdownConverter: React.FC = () => {
             />            
             <hr className='bg-gray-200 h-[inherit] ml-auto w-[1px]' />
             <BarButton
-                label={<FaCopy className="text-[18px]" />}                
+                label={<FaCopy className="text-[18px]" />}    
                 onClick={() => console.log(htmlString)}
             />
             <BarButton
-                label={<FaSave className="text-[18px]" />}
-                onClick={() => console.log(htmlString)}
+                label={<FaDownload className="text-[18px]" />}
+                onClick={handleDownload}
             />            
             <hr className='bg-gray-200 h-[inherit] w-[1px]' />
             <div 
