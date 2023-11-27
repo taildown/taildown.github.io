@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import Markdown from 'react-markdown';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
@@ -20,7 +20,7 @@ const MarkdownConverter: React.FC = () => {
     h1: 'text-3xl font-bold mb-4',
     h2: 'text-2xl font-bold mb-4',
     h3: 'text-xl font-bold mb-4',
-    p: 'mb-4',
+    p: 'mb-2',
     a: 'text-blue-500',
     img: 'w-full',
     table: 'table-auto'
@@ -73,7 +73,7 @@ const MarkdownConverter: React.FC = () => {
         <h1 className='text-base mt-5 text-slate-800 text-left mb-5'>
             <strong>Taildown</strong>
             <span>: Markdown Converter with Tailwind CSS</span>
-        </h1>
+        </h1> 
         <div className="flex items-center flex-col">
         {/* Botões para inserir Markdown */}
         <div className="flex gap-x-2 bg-gray-50 p-2 border border-gray-200 rounded-t-md w-full divide">
@@ -137,11 +137,12 @@ const MarkdownConverter: React.FC = () => {
         )}
 
         {editionMode === 'code' && (
-            <div className="w-full border-x border-b border-gray-200 rounded-b-md min-h-[300px]">
+            <div className="w-full border-x border-b border-gray-200 rounded-b-md h-[300px]">
                 <SyntaxHighlighter 
-                    language="html" 
+                    language="markup"                    
                     showLineNumbers={true}
                     wrapLines={true}
+                    wrapLongLines={true}
                     customStyle={{ margin: '0', height: '100%' }}
                     style={materialLight}>
                     {htmlString}
