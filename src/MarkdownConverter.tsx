@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Tooltip } from 'react-tooltip'
 import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
@@ -96,7 +97,7 @@ const MarkdownConverter: React.FC = () => {
         a.download = editionMode === 'edit' ? 'markdown.md' : 'generated.html';
         a.click();
         URL.revokeObjectURL(url);    
-    };    
+    };  
 
   const components = {
     // eslint-disable-next-line jsx-a11y/heading-has-content
@@ -166,19 +167,36 @@ const MarkdownConverter: React.FC = () => {
                 onClick={() => handleMarkdownInsert('\n|   |   |   |\n|---|---|---|')}
             />            
             <hr className='bg-gray-200 h-[inherit] ml-auto w-[1px]' />
+            <Tooltip id="copy-tooltip" />
             <BarButton
-                label={<FaCopy className="text-[18px]" />}    
+                label={
+                    <FaCopy 
+                        data-tooltip-id="copy-tooltip"
+                        data-tooltip-content="Copy to clipboard"
+                        data-tooltip-place="top"
+                        className="text-[18px]" />}    
                 onClick={() => console.log(htmlString)}
             />
+            <Tooltip id="download-tooltip" />
             <BarButton
-                label={<FaDownload className="text-[18px]" />}
+                label={                    
+                <FaDownload 
+                    className="text-[18px]" 
+                    data-tooltip-id="download-tooltip"
+                    data-tooltip-content={editionMode === 'edit' ? 'Download Markdown' : 'Download HTML'}
+                    data-tooltip-place="top"                    
+                />}
                 onClick={handleDownload}
             />            
             <hr className='bg-gray-200 h-[inherit] w-[1px]' />
+            <Tooltip id="edition-tooltip" />
             <div 
                 onClick={() => setIsEditionSelectionOpen(!isEditionSelectionOpen)}
                 onMouseOver={() => setIsEditionSelectionOpen(true)}
                 onMouseLeave={() => setIsEditionSelectionOpen(false)}
+                data-tooltip-content="Change edition mode"
+                data-tooltip-place="top"
+                data-tooltip-id="edition-tooltip"
                 className={`flex flex-col z-20 h-max border  rounded-md ${isEditionSelectionOpen ? 'overflow-visible bg-white h-content gap-1 p-1 m-[-4px]' : 'overflow-hidden max-h-10'}  `}>
                 { editionButtons.sort((a, b) => a.edition === editionMode ? -1 : 1).map((button, index) => (
                     <BarButton
@@ -189,8 +207,15 @@ const MarkdownConverter: React.FC = () => {
                     />
                 ))}
             </div>
+            <Tooltip id="config-tooltip" />
             <BarButton
-                label={<FaCog className="text-[18px]" />}
+                label={
+                    <FaCog 
+                        data-tooltip-id="config-tooltip"
+                        data-tooltip-content="Settings"
+                        data-tooltip-place="top"
+                        className="text-[18px]" 
+                    />}
                 onClick={() => setEditionMode('config')}
                 active={editionMode === 'config'}
             />            
