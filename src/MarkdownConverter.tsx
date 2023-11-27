@@ -4,6 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { renderToStaticMarkup } from 'react-dom/server';
 import gfm from 'remark-gfm';
+import { Helmet } from 'react-helmet';
 import { FaImage, FaLink, FaCog, FaEye, FaCode, FaPen, FaTable } from 'react-icons/fa';
 import BarButton from './components/BarButton';
 import ConfigFieldset from './components/ConfigFieldset';
@@ -22,9 +23,20 @@ const MarkdownConverter: React.FC = () => {
     h3: 'text-xl font-bold mb-4',
     p: 'mb-2',
     a: 'text-blue-500',
-    img: 'w-full',
+    img: 'max-w-full',
     table: 'table-auto'
   });
+
+  interface BehaviorConfig {
+    shouldOpenLinksInNewTab: boolean;
+    shouldShowLineNumbers: boolean;
+  }
+
+  const [behaviorConfigs, setBehaviorConfigs] = useState<BehaviorConfig>({
+    shouldOpenLinksInNewTab: true,
+    shouldShowLineNumbers: true
+  });
+
   const [editionMode, setEditionMode] = useState<EditionModes>('edit');
 
   const handleMarkdownChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -56,7 +68,7 @@ const MarkdownConverter: React.FC = () => {
     // eslint-disable-next-line jsx-a11y/heading-has-content
     h3: ({ node, ...props }: any) => <h3 aria-label="header" {...props} className={tailwindClasses.h3} />,
     p: ({ node, ...props }: any) => <p className={tailwindClasses.p} {...props} />,
-    a: ({ node, ...props }: any) => <a aria-label="Link" className={tailwindClasses.a} {...props} />,
+    a: ({ node, ...props }: any) => <a aria-label="Link" className={tailwindClasses.a} {...props} target={behaviorConfigs.shouldOpenLinksInNewTab && '_blank'} />,
     img: ({ node, ...props }: any) => <img alt="" className={tailwindClasses.img} {...props} />,
     table: ({ node, ...props }: any) => <table className={tailwindClasses.table} {...props} />,
   };
@@ -69,10 +81,17 @@ const MarkdownConverter: React.FC = () => {
   )}`;
 
   return (
-    <main className='container m-auto min-h-screen px-4 mt-10'>
+    <main className='container m-auto min-h-screen px-4 my-10'>
+        <Helmet>
+            <title>Taildown - Markdown editor with Tailwind CSS classes</title>
+            <meta name="description" content="A simple yet powerful Markdown editor for your writing needs." />
+            <meta name="keywords" content="Taildown, Markdown, Markdown Editor, React, Tailwind CSS" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            {/* Outros metadados, se necessário */}
+        </Helmet>        
         <h1 className='text-base mt-5 text-slate-800 text-left mb-5'>
             <strong>Taildown</strong>
-            <span>: Markdown Converter with Tailwind CSS</span>
+            <span>: Markdown Editor with Tailwind CSS</span>
         </h1> 
         <div className="flex items-center flex-col">
         {/* Botões para inserir Markdown */}
@@ -140,7 +159,7 @@ const MarkdownConverter: React.FC = () => {
             <div className="w-full border-x border-b border-gray-200 rounded-b-md h-[300px]">
                 <SyntaxHighlighter 
                     language="markup"                    
-                    showLineNumbers={true}
+                    showLineNumbers={behaviorConfigs.shouldShowLineNumbers}
                     wrapLines={true}
                     wrapLongLines={true}
                     customStyle={{ margin: '0', height: '100%' }}
@@ -193,25 +212,39 @@ const MarkdownConverter: React.FC = () => {
                 </label>
                 </div>                
                 </ConfigFieldset>
-                <ConfigFieldset
-                    legend="Behavior"
-                >
+                <ConfigFieldset legend="Behavior">
                     <div className="mb-4">
-                    <label>
-                        Link:
-                        <input type="text" className="border ml-3 rounded px-1" value={tailwindClasses.a} onChange={handleConfigChange('a')} />
-                    </label>
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                className='mr-2'
+                                checked={behaviorConfigs.shouldOpenLinksInNewTab} 
+                                onChange={() => setBehaviorConfigs({ ...behaviorConfigs, shouldOpenLinksInNewTab: !behaviorConfigs.shouldOpenLinksInNewTab })} 
+                            />
+                            Open links in new tab
+                        </label>
+                    </div>
+                    <div className="mb-4">
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                className='mr-2'
+                                checked={behaviorConfigs.shouldShowLineNumbers} 
+                                onChange={() => setBehaviorConfigs({ ...behaviorConfigs, shouldShowLineNumbers: !behaviorConfigs.shouldShowLineNumbers })} 
+                            />
+                            Show line numbers
+                        </label>
                     </div>
                 </ConfigFieldset>
             </div>
         )}
         {editionMode === 'edit' && (
             <textarea
-            id="markdownTextArea"
-            onChange={handleMarkdownChange}
-            value={markdown}
-            className="w-full border-x border-b border-gray-200 p-4 rounded-b-md min-h-[300px] resize-none outline-none"
-            placeholder="Enter markdown here..."
+                id="markdownTextArea"
+                onChange={handleMarkdownChange}
+                value={markdown}
+                className="w-full border-x border-b border-gray-200 p-4 rounded-b-md min-h-[300px] resize-none outline-none"
+                placeholder="Enter markdown here..."
             />
         )}        
         </div>
