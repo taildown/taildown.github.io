@@ -162,7 +162,7 @@ const MarkdownConverter: React.FC = () => {
                 onClick={() => handleMarkdownInsert('\n[Link Text](example.com)')}
             />
             <BarButton
-                label={<FaTable className="text-[18px]" />}
+                label={<FaTable className="text-[18px] outline-none" />}
                 disabled={editionMode !== 'edit'}
                 onClick={() => handleMarkdownInsert('\n|   |   |   |\n|---|---|---|')}
             />            
@@ -175,7 +175,7 @@ const MarkdownConverter: React.FC = () => {
                         data-tooltip-id="copy-tooltip"
                         data-tooltip-content="Copy to clipboard"
                         data-tooltip-place="top"
-                        className="text-[18px]" />}    
+                        className="text-[18px] outline-none" />}    
                 onClick={() => console.log(htmlString)}
             />
             <Tooltip id="download-tooltip" />
@@ -183,7 +183,7 @@ const MarkdownConverter: React.FC = () => {
                 disabled={editionMode === 'config'}
                 label={                    
                 <FaDownload 
-                    className="text-[18px]" 
+                    className="text-[18px] outline-none" 
                     data-tooltip-id="download-tooltip"
                     data-tooltip-content={editionMode === 'edit' ? 'Download Markdown' : 'Download HTML'}
                     data-tooltip-place="top"                    

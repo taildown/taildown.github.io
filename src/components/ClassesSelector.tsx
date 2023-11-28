@@ -12,7 +12,7 @@ const ClassesSelector: React.FC<ClassesSelectorProps> = ({value, onChange, name}
 
     return (
         <label className='flex items-center w-full'>
-            <span>{name}</span>
+            <span className='min-w-fit'>{name}</span>
             <CreatableSelect 
                 options={options} 
                 className="ml-3 px-1 grow-1 w-full"
