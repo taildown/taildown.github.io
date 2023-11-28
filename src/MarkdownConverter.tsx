@@ -169,6 +169,7 @@ const MarkdownConverter: React.FC = () => {
             <hr className='bg-gray-200 h-[inherit] ml-auto w-[1px]' />
             <Tooltip id="copy-tooltip" />
             <BarButton
+                disabled={editionMode === 'config'}
                 label={
                     <FaCopy 
                         data-tooltip-id="copy-tooltip"
@@ -179,6 +180,7 @@ const MarkdownConverter: React.FC = () => {
             />
             <Tooltip id="download-tooltip" />
             <BarButton
+                disabled={editionMode === 'config'}
                 label={                    
                 <FaDownload 
                     className="text-[18px]" 
@@ -242,7 +244,7 @@ const MarkdownConverter: React.FC = () => {
             </div>
         )}
         {editionMode === 'config' && (
-            <div className="w-full border-x border-b border-gray-200 rounded-b-md p-4 flex flex-col text-left">
+            <div className="bg-white w-full border-x border-b border-gray-200 rounded-b-md p-4 flex flex-col text-left">
             <h2 className="text-xl font-semibold mb-2">Settings:</h2>
             <ConfigFieldset
                 legend="Tailwind classes"
@@ -289,6 +291,13 @@ const MarkdownConverter: React.FC = () => {
                 </div>
                 <div className="mb-4">
                     <ClassesSelector
+                        name="Anchor:"
+                        value={tailwindClasses.a}
+                        onChange={e => handleConfigChange(e, 'a')}
+                    />
+                </div>                
+                <div className="mb-4">
+                    <ClassesSelector
                         name="Table:"
                         value={tailwindClasses.table}
                         onChange={e => handleConfigChange(e, 'table')}
@@ -321,13 +330,6 @@ const MarkdownConverter: React.FC = () => {
                             name="Emphasis:"
                             value={tailwindClasses.em}
                             onChange={e => handleConfigChange(e, 'em')}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <ClassesSelector
-                            name="Link:"
-                            value={tailwindClasses.a}
-                            onChange={e => handleConfigChange(e, 'a')}
                         />
                     </div>    
                 </div>

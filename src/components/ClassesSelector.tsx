@@ -1,4 +1,4 @@
-import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable';
 import allTailwindClassesList from '../tailwindClasses';
 
 interface ClassesSelectorProps {
@@ -13,7 +13,7 @@ const ClassesSelector: React.FC<ClassesSelectorProps> = ({value, onChange, name}
     return (
         <label className='flex items-center w-full'>
             <span>{name}</span>
-            <Select 
+            <CreatableSelect 
                 options={options} 
                 className="ml-3 px-1 grow-1 w-full"
                 isMulti
