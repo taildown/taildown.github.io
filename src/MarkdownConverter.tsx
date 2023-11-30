@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { Tooltip } from 'react-tooltip'
@@ -24,11 +24,17 @@ const MarkdownConverter: React.FC = () => {
     h1: 'text-3xl font-bold mb-4 text-gray-800',
     h2: 'text-2xl font-bold mb-4 text-gray-800',
     h3: 'text-xl font-bold mb-4 text-gray-800',
+    h4: 'text-lg font-bold mb-4 text-gray-800',
+    h5: 'text-base font-bold mb-4 text-gray-800',
+    h6: 'text-sm font-bold mb-4 text-gray-800',
     p: 'mb-2 text-base text-gray-800',
     a: 'text-blue-500 hover:text-blue-700 hover:underline',
     img: 'max-w-full my-4',
     table: 'table-auto my-4',
     strong: 'font-bold',
+    ul: 'list-disc list-inside',
+    ol: 'list-decimal list-inside',
+    li: 'mb-1',    
     em: 'italic',
     tr: 'border border-gray-200 even:bg-gray-50 odd:bg-white',
     td: 'border border-gray-200 p-1',
@@ -55,7 +61,6 @@ const MarkdownConverter: React.FC = () => {
     }
   ]
 
-
   const [behaviorConfigs, setBehaviorConfigs] = useState<BehaviorConfig>({
     shouldOpenLinksInNewTab: true,
     shouldShowLineNumbers: true
@@ -68,18 +73,34 @@ const MarkdownConverter: React.FC = () => {
 
   const handleMarkdownChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMarkdown(e.target.value);
+    setCursorPosition(e.target.selectionStart);
   };
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [cursorPosition, setCursorPosition] = useState<number>(0);
+
   const handleMarkdownInsert = (textToInsert: string) => {
-    const textarea = document.getElementById('markdownTextArea') as HTMLTextAreaElement;
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+  
     const selectionStart = textarea.selectionStart;
     const selectionEnd = textarea.selectionEnd;
     const newText = markdown.substring(0, selectionStart) + textToInsert + markdown.substring(selectionEnd);
-    setMarkdown(newText);
-    textarea.selectionStart = selectionStart + textToInsert.length;
-    textarea.selectionEnd = selectionStart + textToInsert.length;
-    textarea.focus();
+    setMarkdown(newText);  
+
+    setTimeout(() => {
+      const newCursorPosition = selectionStart + textToInsert.length;
+      setCursorPosition(newCursorPosition);
+      textarea.focus();
+    }, 0);
   };
+  
+    useEffect(() => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.setSelectionRange(cursorPosition, cursorPosition);
+        }
+    }, [markdown, cursorPosition]);  
 
     const handleConfigChange = (selectedOptions: any, property: string) => {
         setTailwindClasses(prevState => ({
@@ -110,6 +131,9 @@ const MarkdownConverter: React.FC = () => {
     a: ({ node, ...props }: any) => <a aria-label="Link" className={tailwindClasses.a} {...props} target={behaviorConfigs.shouldOpenLinksInNewTab && '_blank'} />,
     img: ({ node, ...props }: any) => <img alt="" className={tailwindClasses.img} {...props} />,
     table: ({ node, ...props }: any) => <table className={tailwindClasses.table} {...props} />,
+    ul: ({ node, ...props }: any) => <ul className={tailwindClasses.ul} {...props} />,
+    ol: ({ node, ...props }: any) => <ol className={tailwindClasses.ol} {...props} />,
+    li: ({ node, ...props }: any) => <li className={tailwindClasses.li} {...props} />,    
     strong: ({ node, ...props }: any) => <strong className={tailwindClasses.strong} {...props} />,
     em: ({ node, ...props }: any) => <em className={tailwindClasses.em} {...props} />,
     tr: ({ node, ...props }: any) => <tr className={tailwindClasses.tr} {...props} />,
@@ -117,7 +141,6 @@ const MarkdownConverter: React.FC = () => {
     th: ({ node, ...props }: any) => <th className={tailwindClasses.th} {...props} />,
   };
 
-  // Converte o JSX para uma string HTML
   const htmlString = `${renderToStaticMarkup(
     <Markdown components={components} remarkPlugins={[gfm]}>
       {markdown}
@@ -216,7 +239,7 @@ const MarkdownConverter: React.FC = () => {
                         data-tooltip-id="config-tooltip"
                         data-tooltip-content="Settings"
                         data-tooltip-place="top"
-                        className="text-[18px]" 
+                        className="text-[18px] outline-none" 
                     />}
                 onClick={() => setEditionMode('config')}
                 active={editionMode === 'config'}
@@ -317,7 +340,35 @@ const MarkdownConverter: React.FC = () => {
                             value={tailwindClasses.td}
                             onChange={e => handleConfigChange(e, 'td')}
                         />
-                    </div>                            
+                    </div>     
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Table Header:"
+                            value={tailwindClasses.th}
+                            onChange={e => handleConfigChange(e, 'th')}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Unordered List:"
+                            value={tailwindClasses.ul}
+                            onChange={e => handleConfigChange(e, 'ul')}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="Ordered List:"
+                            value={tailwindClasses.ol}
+                            onChange={e => handleConfigChange(e, 'ol')}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ClassesSelector
+                            name="List Item:"
+                            value={tailwindClasses.li}
+                            onChange={e => handleConfigChange(e, 'li')}
+                        />
+                    </div>                       
                     <div className="mb-4">
                         <ClassesSelector
                             name="Strong:"
@@ -368,6 +419,7 @@ const MarkdownConverter: React.FC = () => {
         {editionMode === 'edit' && (
             <textarea
                 id="markdownTextArea"
+                ref={textareaRef}
                 onChange={handleMarkdownChange}
                 value={markdown}
                 className="w-full border-x border-b border-gray-200 p-4 rounded-b-md min-h-[300px] resize-none outline-none"

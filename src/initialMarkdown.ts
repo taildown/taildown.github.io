@@ -19,6 +19,14 @@ Here's an example of a table:
 | Content 1| Content 2|
 | Content 3| Content 4|
 
+Now, let's add a list:
+
+- Item 1
+- Item 2
+  - Subitem 2.1
+  - Subitem 2.2
+- Item 3
+
 Feel free to modify this Markdown file to suit your needs and experiment with Tailwind CSS classes.
 
 > Tailwind CSS is a utility-first CSS framework that makes styling your projects easy and efficient. It provides a wide range of pre-designed classes that you can apply directly to your HTML elements, allowing for rapid development without the need for custom CSS.
