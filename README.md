@@ -1,46 +1,77 @@
-# Getting Started with Create React App
+# Taildown - 📝 Markdown Editor with Tailwind CSS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Taildown is a simple yet powerful Markdown editor built with React ⚛️ and Tailwind CSS 🌈. It allows you to seamlessly edit, preview, and export your Markdown content with the added flexibility of customizing styles using Tailwind CSS classes.
 
-## Available Scripts
+## Demo
 
-In the project directory, you can run:
+Check out the live demo at [taildown.github.io](https://taildown.github.io).
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Edit Mode:** Write and edit your Markdown content with a real-time preview.
+- **Preview Mode:** View a live preview of your Markdown content rendered with Tailwind CSS styles.
+- **Code Mode:** Inspect the generated HTML code with syntax highlighting and line numbers.
+- **Config Mode:** Customize Tailwind CSS classes for different Markdown elements.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+To use Taildown, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository: `git clone https://github.com/your-username/taildown.git`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
 
-### `npm run build`
+## Usage
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Markdown Editing
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Heading Tags:**
+   - H1: Click on the "H1" button or type `# ` at the beginning of a line.
+   - H2: Click on the "H2" button or type `## ` at the beginning of a line.
+   - H3: Click on the "H3" button or type `### ` at the beginning of a line.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Insert Image:**
+   - Click on the image icon or type `![Alt Text](image.png)`.
 
-### `npm run eject`
+3. **Insert Link:**
+   - Click on the link icon or type `[Link Text](example.com)`.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+4. **Insert Table:**
+   - Click on the table icon or type:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+     ```
+     |   |   |   |
+     |---|---|---|
+     ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+5. **Customization:**
+   - Change the Tailwind CSS classes for each Markdown element in the Config Mode.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Preview Mode
 
-## Learn More
+- Click on the eye icon to switch to Preview Mode and see your Markdown content rendered with Tailwind CSS styles.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Code Mode
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Click on the code icon to switch to Code Mode and inspect the generated HTML code with syntax highlighting and line numbers.
+
+### Download
+
+- Download your content in either Markdown or HTML format using the download button.
+
+### Settings
+
+- Access additional settings in the Config Mode, including Tailwind classes customization and behavior configurations.
+
+## Contributing
+
+Feel free to contribute to the project by opening issues or creating pull requests. Your feedback and contributions are highly appreciated.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+**Taildown - 📝 Markdown Editor with Tailwind CSS and React**  
+A project by @teles
