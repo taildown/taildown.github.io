@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
+import debounce from './utils/debounce';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { Tooltip } from 'react-tooltip'
@@ -19,7 +20,11 @@ interface TailwindClasses {
 type EditionModes = 'edit' | 'preview' | 'code' | 'config';
 
 const MarkdownConverter: React.FC = () => {
-  const [markdown, setMarkdown] = useState<string>(initialMarkdown);
+    const [markdown, setMarkdown] = useState<string>(() => {
+        const savedMarkdown = localStorage.getItem('markdown');
+        return savedMarkdown || initialMarkdown;
+    });
+
   const [tailwindClasses, setTailwindClasses] = useState<TailwindClasses>({
     h1: 'text-3xl font-bold mb-4 text-gray-800',
     h2: 'text-2xl font-bold mb-4 text-gray-800',
@@ -40,6 +45,16 @@ const MarkdownConverter: React.FC = () => {
     td: 'border border-gray-200 p-1',
     th: 'border border-gray-200 p-1',
   });
+
+  const saveMarkdownToLocalStorage = useRef(
+    debounce((content: string) => {
+      localStorage.setItem('markdown', content);
+    }, 1000)
+  ).current;
+
+  useEffect(() => {
+    saveMarkdownToLocalStorage(markdown);
+  }, [markdown, saveMarkdownToLocalStorage]);  
 
   interface BehaviorConfig {
     shouldOpenLinksInNewTab: boolean;
