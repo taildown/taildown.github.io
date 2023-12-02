@@ -1,12 +1,13 @@
-import './App.css';
-import MarkdownConverter from './MarkdownConverter';
+import './App.css'
+import MarkdownConverter from './MarkdownConverter'
+import { type ReactElement } from 'react'
 
-function App() {
+function App (): ReactElement {
   return (
     <div className="App">
       <MarkdownConverter />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

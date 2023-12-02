@@ -34,6 +34,6 @@ Feel free to modify this Markdown file to suit your needs and experiment with Ta
 For more information, check out the [Tailwind CSS Documentation](https://tailwindcss.com/docs).
 
 Happy coding!
-`;
+`
 
-export default initialMarkdown;
+export default initialMarkdown
