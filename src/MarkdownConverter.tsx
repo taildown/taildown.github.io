@@ -168,7 +168,7 @@ const MarkdownConverter: React.FC = () => {
             <span>: Markdown Editor with Tailwind CSS</span>
         </h1>
         <div className="flex items-center flex-col">
-        <div className="flex gap-x-2 bg-gray-50 p-2 border border-gray-200 rounded-t-md w-full divide max-h-[58px]">
+        <div className="flex gap-x-2 bg-gradient-to-b from-gray-50 to-gray-100 p-2 border border-gray-200 rounded-t-md w-full divide max-h-[58px]">
             <BarButton
                 label={<>H1</>}
                 onClick={() => { handleMarkdownInsert('\n# ') }}
